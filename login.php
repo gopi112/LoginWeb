@@ -1,0 +1,83 @@
+<?php
+include 'config.php';
+ ?>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>Registration Form</title>
+    <style>
+    form{
+      width: 30%;
+      margin:0px auto;
+      padding: 20px;
+      border: 2px solid #B0C4DE;
+      background: white;
+      border radius:0px 0px 10px 10px;
+    }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-sm bg-secondary navbar-dark">
+  <ul class="navbar-nav">
+    <li class="nav-item active">
+      <a class="nav-link" href="register.php">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">About</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Team</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="container">
+<div class="header text-center">
+    <h2>Login</h2>
+</div>
+<form action="" method="post">
+     <div class="form-group">
+       <label for="username">Username:</label>
+       <input type="text" class="form-control" id="username" placeholder="Enter name" name="username">
+     </div>
+     <div class="form-group">
+       <label for="pwd">Password:</label>
+       <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pswd_1">
+     </div>
+     <button type="submit" name="login" class="btn btn-primary">Login</button>
+    <p>
+      Not yet a member? <a href="register.php">Sign Up</a>
+    </p>
+   </form>
+   <?php
+    if (isset($_POST["login"]))
+    {
+        $username = $_POST['username'];
+        $pswd_1 = $_POST['pswd_1'];
+
+        if($username != "" && $pswd_1 !="")
+        {
+            $sql = "SELECT id, username, password1 FROM registertable WHERE username = '".$username."' and password1 = '".$pswd_1."' ";
+            $result = mysqli_query($conn,$sql);
+            if ($row = mysqli_fetch_assoc($result))
+            {
+                session_start();
+                $_SESSION["login"] = $row['username'];
+                header("location:index.php");
+            }
+            else
+            {
+                echo "<script>alert('The email & password you entered was not valid.');</script>";
+            }
+        }
+    }
+  ?>
+ </div>
+</body>
+</html>
